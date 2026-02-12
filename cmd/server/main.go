@@ -6,14 +6,44 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"runtime"
 
 	"github.com/joho/godotenv"
 	httpHandler "github.com/kevo-1/model-serving-platform/internal/handler/http"
 	"github.com/kevo-1/model-serving-platform/internal/repository"
 	"github.com/kevo-1/model-serving-platform/pkg/onnx"
+	ort "github.com/yalue/onnxruntime_go"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+        log.Println("No .env file found, using system environment")
+    }
+
+	libraryPath := os.Getenv("ONNX_LIBRARY_PATH")
+
+	if libraryPath == "" {
+		switch runtime.GOOS {
+		case "linux":
+			libraryPath = "/usr/lib/libonnxruntime.so"
+		case "darwin":
+			libraryPath = "/usr/lib/libonnxruntime.dylib"
+		case "windows":
+			libraryPath = "C:\\Program Files\\onnxruntime\\lib\\onnxruntime.dll"
+		default:
+			log.Fatal("Unsupported operating system")
+		}
+	}
+
+	log.Printf("Using ONNX library path: %s", libraryPath)
+
+	ort.SetSharedLibraryPath(libraryPath)
+
+	if err := ort.InitializeEnvironment(); err != nil {
+		log.Fatalf("Failed to initialize ONNX environment: %v", err)
+	}
+    defer ort.DestroyEnvironment()
+
     // Step 1: Create model registry
 	registry := repository.NewModelRegistery()
 	
@@ -36,9 +66,6 @@ func main() {
 
 	
     // Step 4: Setup HTTP server
-	if err := godotenv.Load(); err != nil {
-        log.Println("No .env file found, using system environment")
-    }
 	
     port := os.Getenv("PORT")
     if port == "" {
