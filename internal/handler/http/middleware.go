@@ -2,10 +2,34 @@ package http
 
 import (
     "net/http"
+    "context"
     "time"
     
+    "github.com/google/uuid" 
+    "github.com/kevo-1/model-serving-platform/internal/logger"
     "github.com/kevo-1/model-serving-platform/internal/metrics"
 )
+
+
+func RequestIDMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        requestID := uuid.New().String()
+
+        ctx := context.WithValue(r.Context(), logger.RequestIDKey, requestID)
+        r = r.WithContext(ctx)
+
+        w.Header().Set("X-Request-ID", requestID)
+
+        logger.Info("http request received", 
+            "request_id", requestID,
+            "method", r.Method,
+            "path", r.URL.Path,
+        )
+
+        next.ServeHTTP(w, r)
+    })
+}
+
 
 type responseWriter struct {
     http.ResponseWriter

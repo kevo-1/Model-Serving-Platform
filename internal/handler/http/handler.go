@@ -37,6 +37,7 @@ func (h *Handler) SetupRoutes() http.Handler {
     })
     
     handler := corsMiddleware(mux)
+    handler = RequestIDMiddleware(handler)
     handler = MetricsMiddleware(handler)
     
     return handler

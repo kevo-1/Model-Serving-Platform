@@ -2,10 +2,21 @@ package logger
 
 import (
 	"log/slog"
+	"context"
 	"os"
 )
 
 var logger *slog.Logger
+
+type contextKey string
+const RequestIDKey contextKey = "request_id"
+
+func GetRequestID(ctx context.Context) string {
+    if id, ok := ctx.Value(RequestIDKey).(string); ok {
+        return id
+    }
+    return "unknown"
+}
 
 
 func Init() {
