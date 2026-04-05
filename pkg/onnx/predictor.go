@@ -72,3 +72,7 @@ func (p *DummyPredictor) Metadata() domain.ModelMetadata {
 func (p *DummyPredictor) Close() error {
     return nil
 }
+
+func (p *DummyPredictor) ModelInfo() *ModelInfo {
+    return nil
+}

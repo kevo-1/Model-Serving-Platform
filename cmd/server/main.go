@@ -72,7 +72,7 @@ func main() {
 	}
     
     // Step 3: Create HTTP handler
-	handler := httpHandler.NewHandler(registry)
+	handler := httpHandler.NewHandler(registry, "models")
 	routes := handler.SetupRoutes()
 
 	

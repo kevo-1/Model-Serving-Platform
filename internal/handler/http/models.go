@@ -5,18 +5,39 @@ import (
 	"net/http"
 )
 
+type ModelDetail struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	Path    string `json:"path"`
+}
+
 type ModelsResponse struct {
-    Models []string `json:"models"`
-    Count  int      `json:"count"`
+	Models []ModelDetail `json:"models"`
+	Count  int           `json:"count"`
 }
 
 func (h *Handler) handleListModels(w http.ResponseWriter, r *http.Request) {
+	modelIDs := h.modelRegistry.List()
 
-	models := h.modelRegistry.List()
+	details := make([]ModelDetail, 0, len(modelIDs))
+	for _, id := range modelIDs {
+		predictor, err := h.modelRegistry.Get(id)
+		if err != nil {
+			continue
+		}
+		meta := predictor.Metadata()
+		details = append(details, ModelDetail{
+			ID:      meta.ID,
+			Name:    meta.Name,
+			Version: meta.Version,
+			Path:    meta.Path,
+		})
+	}
 
 	response := ModelsResponse{
-		Models: models,
-		Count: len(models),
+		Models: details,
+		Count:  len(details),
 	}
 
 	w.Header().Set("Content-Type", "application/json")

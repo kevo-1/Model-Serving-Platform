@@ -1,0 +1,22 @@
+{
+  "inputs": [
+    {
+      "name": "X",
+      "shape": [
+        0,
+        10
+      ],
+      "dtype": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "variable",
+      "shape": [
+        0,
+        1
+      ],
+      "dtype": 1
+    }
+  ]
+}
