@@ -3,10 +3,13 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Model Nexus - ML Inference Platform</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<title>Model Nexus</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
 			* {
 				margin: 0;
@@ -15,50 +18,32 @@
 			}
 
 			:root {
-				--bg-primary: #0a0e1a;
-				--bg-secondary: #111827;
-				--bg-card: #1a1f35;
-				--bg-card-hover: #222844;
-				--accent-primary: #00d9ff;
-				--accent-secondary: #7c3aed;
-				--accent-gradient: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%);
-				--text-primary: #ffffff;
-				--text-secondary: #94a3b8;
-				--text-muted: #64748b;
-				--border-color: #2d3548;
-				--success: #10b981;
+				--bg: #09090b;
+				--bg-card: #18181b;
+				--bg-input: #09090b;
+				--border: #27272a;
+				--border-focus: #52525b;
+				--text: #fafafa;
+				--text-secondary: #a1a1aa;
+				--text-muted: #52525b;
+				--accent: #ffffff;
+				--success: #22c55e;
 				--error: #ef4444;
-				--warning: #f59e0b;
+				--radius: 8px;
 			}
 
 			body {
-				font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-				background: var(--bg-primary);
-				color: var(--text-primary);
-				line-height: 1.6;
-				overflow-x: hidden;
-			}
-
-			/* Animated background */
-			.bg-gradient {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: 0;
-				opacity: 0.08;
-				background: 
-					radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					sans-serif;
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.5;
 			}
 
 			.container {
-				position: relative;
-				z-index: 1;
-				max-width: 1400px;
+				max-width: 960px;
 				margin: 0 auto;
-				padding: 2rem;
+				padding: 1.5rem;
 			}
 
 			/* Header */
@@ -66,78 +51,29 @@
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				margin-bottom: 3rem;
-				padding: 1.5rem 2rem;
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: 16px;
-				backdrop-filter: blur(10px);
-				animation: slideDown 0.6s ease;
-			}
-
-			@keyframes slideDown {
-				from {
-					opacity: 0;
-					transform: translateY(-20px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-
-			.logo-section {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
-			}
-
-			.logo {
-				width: 10px;
-				height: 10px;
-				background: var(--accent-gradient);
-				border-radius: 50%;
+				padding: 1rem 0;
+				margin-bottom: 2rem;
+				border-bottom: 1px solid var(--border);
 			}
 
 			h1 {
-				font-size: 1.75rem;
-				font-weight: 800;
-				background: var(--accent-gradient);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
-			}
-
-			.subtitle {
-				font-size: 0.875rem;
-				color: var(--text-secondary);
-				font-weight: 500;
-				margin-top: 0.25rem;
-			}
-
-			/* Status Badge */
-			.status-section {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
+				font-size: 1.125rem;
+				font-weight: 700;
+				letter-spacing: -0.02em;
 			}
 
 			.status-badge {
 				display: flex;
 				align-items: center;
-				gap: 0.5rem;
-				padding: 0.625rem 1.25rem;
-				border-radius: 50px;
-				font-size: 0.875rem;
-				font-weight: 600;
-				background: var(--bg-secondary);
-				border: 1px solid var(--border-color);
-				transition: all 0.3s ease;
+				gap: 0.375rem;
+				font-size: 0.75rem;
+				font-weight: 500;
+				color: var(--text-secondary);
 			}
 
 			.status-dot {
-				width: 8px;
-				height: 8px;
+				width: 6px;
+				height: 6px;
 				border-radius: 50%;
 				background: var(--text-muted);
 			}
@@ -150,540 +86,587 @@
 				background: var(--error);
 			}
 
-			/* Stats Grid */
-			.stats-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-				gap: 1.5rem;
+			/* Sections */
+			.section {
 				margin-bottom: 2rem;
-				animation: fadeIn 0.6s ease 0.2s both;
 			}
 
-			@keyframes fadeIn {
-				from {
-					opacity: 0;
-					transform: translateY(20px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-
-			.stat-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: 12px;
-				padding: 1.5rem;
-				transition: all 0.3s ease;
-			}
-
-			.stat-card:hover {
-				border-color: var(--accent-primary);
-			}
-
-			.stat-label {
-				font-size: 0.75rem;
-				color: var(--text-muted);
-				text-transform: uppercase;
-				letter-spacing: 0.1em;
+			.section-title {
+				font-size: 0.6875rem;
 				font-weight: 600;
-				margin-bottom: 0.5rem;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: var(--text-muted);
+				margin-bottom: 1rem;
 			}
 
-			.stat-value {
-				font-size: 2rem;
-				font-weight: 800;
-				font-family: 'JetBrains Mono', monospace;
-				color: var(--text-primary);
-			}
-
-			.stat-unit {
-				font-size: 0.875rem;
-				color: var(--text-secondary);
-				margin-left: 0.25rem;
-			}
-
-			/* Main Grid */
-			.main-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 2rem;
-				animation: fadeIn 0.6s ease 0.4s both;
-			}
-
-			@media (max-width: 968px) {
-				.main-grid {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			/* Card Styles */
+			/* Card */
 			.card {
 				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: 16px;
-				padding: 2rem;
-				backdrop-filter: blur(10px);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 1.25rem;
 			}
 
-			.card-header {
-				display: flex;
-				align-items: center;
-				gap: 0.75rem;
-				margin-bottom: 1.5rem;
-				padding-bottom: 1rem;
-				border-bottom: 1px solid var(--border-color);
-			}
-
-			.card-icon {
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background: var(--accent-primary);
-			}
-
-			h2 {
-				font-size: 1.25rem;
-				font-weight: 700;
-			}
-
-			/* Form Styles */
+			/* Form */
 			.form-group {
-				margin-bottom: 1.5rem;
+				margin-bottom: 1rem;
 			}
 
 			label {
 				display: block;
-				font-weight: 600;
-				margin-bottom: 0.5rem;
+				font-size: 0.75rem;
+				font-weight: 500;
 				color: var(--text-secondary);
-				font-size: 0.875rem;
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
+				margin-bottom: 0.375rem;
 			}
 
 			select,
-			textarea,
-			input {
+			input,
+			textarea {
 				width: 100%;
-				padding: 0.875rem 1rem;
-				background: var(--bg-secondary);
-				border: 1px solid var(--border-color);
-				border-radius: 10px;
-				color: var(--text-primary);
-				font-family: 'JetBrains Mono', monospace;
-				font-size: 0.875rem;
-				transition: all 0.3s ease;
+				padding: 0.625rem 0.75rem;
+				background: var(--bg-input);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				color: var(--text);
+				font-family: "JetBrains Mono", monospace;
+				font-size: 0.8125rem;
+				transition: border-color 0.15s;
 			}
 
 			select:focus,
-			textarea:focus,
-			input:focus {
+			input:focus,
+			textarea:focus {
 				outline: none;
-				border-color: var(--accent-primary);
-				box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
-			}
-
-			textarea {
-				min-height: 120px;
-				resize: vertical;
+				border-color: var(--border-focus);
 			}
 
 			select {
 				cursor: pointer;
+				appearance: none;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2352525b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+				background-repeat: no-repeat;
+				background-position: right 0.75rem center;
+				padding-right: 2rem;
+			}
+
+			textarea {
+				resize: vertical;
+				min-height: 40px;
+			}
+
+			/* Feature Inputs */
+			.feature-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+				gap: 0.75rem;
+			}
+
+			.feature-field label {
+				display: flex;
+				align-items: center;
+				gap: 0.375rem;
+			}
+
+			.dtype-tag {
+				font-size: 0.625rem;
+				font-weight: 500;
+				color: var(--text-muted);
+				background: var(--bg);
+				padding: 0.125rem 0.375rem;
+				border-radius: 4px;
+				text-transform: uppercase;
 			}
 
 			/* Button */
 			button {
 				width: 100%;
-				padding: 1rem 1.5rem;
-				background: var(--accent-gradient);
-				color: var(--text-primary);
+				padding: 0.625rem 1rem;
+				background: var(--accent);
+				color: var(--bg);
 				border: none;
-				border-radius: 10px;
-				font-weight: 700;
-				font-size: 1rem;
+				border-radius: var(--radius);
+				font-weight: 600;
+				font-size: 0.8125rem;
 				cursor: pointer;
-				transition: all 0.3s ease;
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
+				transition: opacity 0.15s;
 			}
 
 			button:hover {
-				opacity: 0.9;
-				transform: translateY(-1px);
-			}
-
-			button:active {
-				transform: translateY(0);
+				opacity: 0.85;
 			}
 
 			button:disabled {
-				background: var(--bg-secondary);
+				background: var(--border);
 				cursor: not-allowed;
-				opacity: 0.5;
 			}
 
-			button:disabled:hover {
-				transform: none;
-			}
-
-			.button-content {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				gap: 0.5rem;
-			}
-
-			/* Result Area */
+			/* Result */
 			.result-area {
-				margin-top: 1.5rem;
-				padding: 1.5rem;
-				background: var(--bg-secondary);
-				border: 1px solid var(--border-color);
-				border-radius: 10px;
-				font-family: 'JetBrains Mono', monospace;
-				font-size: 0.813rem;
+				margin-top: 1rem;
+				padding: 1rem;
+				background: var(--bg-input);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				font-family: "JetBrains Mono", monospace;
+				font-size: 0.75rem;
 				line-height: 1.6;
 				display: none;
-				animation: slideUp 0.3s ease;
-			}
-
-			@keyframes slideUp {
-				from {
-					opacity: 0;
-					transform: translateY(10px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-
-			.result-area.error {
-				border-color: var(--error);
-				background: rgba(239, 68, 68, 0.1);
-			}
-
-			.result-area.success {
-				border-color: var(--success);
-				background: rgba(16, 185, 129, 0.1);
-			}
-
-			.result-header {
-				display: flex;
-				align-items: center;
-				gap: 0.5rem;
-				margin-bottom: 1rem;
-				padding-bottom: 0.75rem;
-				border-bottom: 1px solid var(--border-color);
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.1em;
-				font-size: 0.75rem;
-			}
-
-			.result-content {
 				white-space: pre-wrap;
 				word-break: break-word;
 			}
 
+			.result-area.error {
+				border-color: var(--error);
+			}
+
+			.result-area.success {
+				border-color: var(--success);
+			}
+
 			/* Models List */
 			.models-list {
-				max-height: 400px;
+				max-height: 280px;
 				overflow-y: auto;
-				padding-right: 0.5rem;
-			}
-
-			.models-list::-webkit-scrollbar {
-				width: 6px;
-			}
-
-			.models-list::-webkit-scrollbar-track {
-				background: var(--bg-secondary);
-				border-radius: 10px;
-			}
-
-			.models-list::-webkit-scrollbar-thumb {
-				background: var(--border-color);
-				border-radius: 10px;
-			}
-
-			.models-list::-webkit-scrollbar-thumb:hover {
-				background: var(--accent-primary);
 			}
 
 			.model-item {
-				padding: 1rem;
-				background: var(--bg-secondary);
-				border: 1px solid var(--border-color);
-				border-radius: 10px;
-				margin-bottom: 0.75rem;
-				transition: all 0.2s ease;
+				padding: 0.75rem;
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				margin-bottom: 0.5rem;
 				cursor: pointer;
+				transition: border-color 0.15s;
 			}
 
 			.model-item:hover {
-				border-color: var(--accent-primary);
+				border-color: var(--border-focus);
+			}
+
+			.model-item:last-child {
+				margin-bottom: 0;
 			}
 
 			.model-name {
-				font-weight: 700;
-				font-family: 'JetBrains Mono', monospace;
-				color: var(--accent-primary);
-				margin-bottom: 0.25rem;
+				font-weight: 600;
+				font-size: 0.8125rem;
 			}
 
 			.model-meta {
-				font-size: 0.75rem;
+				font-size: 0.6875rem;
 				color: var(--text-muted);
+				margin-top: 0.125rem;
+			}
+
+			.model-io {
+				font-size: 0.6875rem;
+				color: var(--text-secondary);
+				font-family: "JetBrains Mono", monospace;
+				margin-top: 0.375rem;
 			}
 
 			.empty-state {
 				text-align: center;
-				padding: 3rem 1rem;
+				padding: 2rem 1rem;
+				color: var(--text-muted);
+				font-size: 0.8125rem;
+			}
+
+			/* Upload */
+			.upload-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr 1fr;
+				gap: 0.75rem;
+			}
+
+			.upload-grid .full-width {
+				grid-column: 1 / -1;
+			}
+
+			@media (max-width: 640px) {
+				.upload-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.file-drop {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0.5rem;
+				padding: 1.5rem;
+				border: 1px dashed var(--border);
+				border-radius: var(--radius);
+				cursor: pointer;
+				transition: border-color 0.15s;
+				position: relative;
+			}
+
+			.file-drop:hover {
+				border-color: var(--border-focus);
+			}
+
+			.file-drop input[type="file"] {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				cursor: pointer;
+			}
+
+			.file-drop-text {
+				font-size: 0.75rem;
 				color: var(--text-muted);
 			}
 
-			/* Loading Spinner */
+			.file-drop-name {
+				font-size: 0.6875rem;
+				color: var(--text-secondary);
+				font-family: "JetBrains Mono", monospace;
+			}
+
+			/* Stats */
+			.stats-row {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+				gap: 0.75rem;
+			}
+
+			.stat {
+				padding: 0.75rem 1rem;
+				background: var(--bg-card);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+			}
+
+			.stat-label {
+				font-size: 0.6875rem;
+				color: var(--text-muted);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.stat-value {
+				font-size: 1.25rem;
+				font-weight: 700;
+				font-family: "JetBrains Mono", monospace;
+			}
+
+			.stat-unit {
+				font-size: 0.6875rem;
+				color: var(--text-muted);
+				margin-left: 0.125rem;
+			}
+
+			/* Spinner */
 			.spinner {
-				width: 16px;
-				height: 16px;
-				border: 2px solid var(--text-primary);
+				width: 14px;
+				height: 14px;
+				border: 2px solid var(--text);
 				border-top-color: transparent;
 				border-radius: 50%;
 				animation: spin 0.8s linear infinite;
+				display: inline-block;
 			}
 
 			@keyframes spin {
-				to { transform: rotate(360deg); }
-			}
-
-			/* Quick Examples */
-			.examples {
-				margin-top: 1rem;
-				padding: 1rem;
-				background: var(--bg-secondary);
-				border-radius: 10px;
-				border: 1px solid var(--border-color);
-			}
-
-			.examples-title {
-				font-size: 0.75rem;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.1em;
-				color: var(--text-muted);
-				margin-bottom: 0.75rem;
-			}
-
-			.example-chips {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5rem;
-			}
-
-			.example-chip {
-				padding: 0.5rem 0.875rem;
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
-				border-radius: 20px;
-				font-size: 0.75rem;
-				font-family: 'JetBrains Mono', monospace;
-				color: var(--text-secondary);
-				cursor: pointer;
-				transition: all 0.2s ease;
-			}
-
-			.example-chip:hover {
-				border-color: var(--accent-primary);
-				color: var(--accent-primary);
+				to {
+					transform: rotate(360deg);
+				}
 			}
 
 			/* Footer */
 			footer {
-				margin-top: 3rem;
-				padding-top: 2rem;
-				border-top: 1px solid var(--border-color);
-				text-align: center;
-				color: var(--text-muted);
-				font-size: 0.875rem;
-			}
-
-			.footer-links {
+				margin-top: 2rem;
+				padding-top: 1rem;
+				border-top: 1px solid var(--border);
 				display: flex;
-				justify-content: center;
-				gap: 2rem;
-				margin-top: 1rem;
+				justify-content: space-between;
+				font-size: 0.6875rem;
+				color: var(--text-muted);
 			}
 
-			.footer-link {
+			footer a {
 				color: var(--text-secondary);
 				text-decoration: none;
-				transition: color 0.3s ease;
+				margin-left: 1rem;
 			}
 
-			.footer-link:hover {
-				color: var(--accent-primary);
+			footer a:hover {
+				color: var(--accent);
+			}
+
+			/* No model selected state */
+			.no-model-prompt {
+				text-align: center;
+				padding: 1.5rem;
+				color: var(--text-muted);
+				font-size: 0.8125rem;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="bg-gradient"></div>
 		<div class="container">
 			<header>
-				<div class="logo-section">
-					<div class="logo"></div>
-					<div>
-						<h1>Model Nexus</h1>
-						<div class="subtitle">ML Inference Platform</div>
-					</div>
-				</div>
-				<div class="status-section">
-					<div id="server-status" class="status-badge">
-						<div class="status-dot"></div>
-						<span>Checking...</span>
-					</div>
+				<h1>Model Nexus</h1>
+				<div id="server-status" class="status-badge">
+					<div class="status-dot"></div>
+					<span>Checking...</span>
 				</div>
 			</header>
 
-			<!-- Stats Grid -->
-			<div class="stats-grid">
-				<div class="stat-card">
-					<div class="stat-label">Models Loaded</div>
-					<div class="stat-value" id="stat-models">
-						<span class="spinner"></span>
+			<!-- Stats -->
+			<div class="section">
+				<div class="section-title">Overview</div>
+				<div class="stats-row">
+					<div class="stat">
+						<div class="stat-label">Models</div>
+						<div class="stat-value" id="stat-models">—</div>
 					</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Total Predictions</div>
-					<div class="stat-value" id="stat-predictions">
-						<span class="spinner"></span>
+					<div class="stat">
+						<div class="stat-label">Predictions</div>
+						<div class="stat-value" id="stat-predictions">0</div>
 					</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Avg Latency</div>
-					<div class="stat-value" id="stat-latency">
-						<span class="spinner"></span>
+					<div class="stat">
+						<div class="stat-label">Avg Latency</div>
+						<div class="stat-value" id="stat-latency">—</div>
 					</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Success Rate</div>
-					<div class="stat-value" id="stat-success">
-						<span class="spinner"></span>
+					<div class="stat">
+						<div class="stat-label">Success</div>
+						<div class="stat-value" id="stat-success">—</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- Main Grid -->
-			<div class="main-grid">
-				<!-- Prediction Form -->
+			<!-- Models -->
+			<div class="section">
+				<div class="section-title">Models</div>
 				<div class="card">
-					<div class="card-header">
-						<div class="card-icon"></div>
-						<h2>Make a Prediction</h2>
+					<div id="models-list" class="models-list">
+						<div class="empty-state">Loading models...</div>
 					</div>
+				</div>
+			</div>
 
+			<!-- Predict -->
+			<div class="section">
+				<div class="section-title">Prediction</div>
+				<div class="card">
 					<form id="prediction-form">
 						<div class="form-group">
-							<label for="model-select">Select Model</label>
+							<label for="model-select">Model</label>
 							<select id="model-select" required>
-								<option value="" disabled selected>Loading models...</option>
+								<option value="" disabled selected>
+									Select a model
+								</option>
 							</select>
 						</div>
-
-						<div class="form-group">
-							<label for="input-data">Input Features (JSON Array)</label>
-							<textarea
-								id="input-data"
-								placeholder='[5.1, 3.5, 1.4, 0.2]'
-								required
-							></textarea>
+						<div id="features-container"></div>
+						<div class="form-group" style="margin-top: 1rem">
+							<button type="submit" id="predict-btn">
+								Predict
+							</button>
 						</div>
-
-						<div class="examples">
-							<div class="examples-title">Quick Examples</div>
-							<div class="example-chips">
-								<div class="example-chip" data-example='[5.1, 3.5, 1.4, 0.2]'>Setosa</div>
-								<div class="example-chip" data-example='[6.5, 3.0, 5.2, 2.0]'>Virginica</div>
-								<div class="example-chip" data-example='[5.9, 3.0, 4.2, 1.5]'>Versicolor</div>
-							</div>
-						</div>
-
-						<button type="submit" id="predict-btn">
-							<span class="button-content">
-								<span>Run Prediction</span>
-							</span>
-						</button>
 					</form>
-
 					<div id="result-area" class="result-area"></div>
 				</div>
+			</div>
 
-				<!-- Models List -->
+			<!-- Upload -->
+			<div class="section">
+				<div class="section-title">Upload Model</div>
 				<div class="card">
-					<div class="card-header">
-						<div class="card-icon"></div>
-						<h2>Available Models</h2>
-					</div>
-					<div id="models-list" class="models-list">
-						<div class="empty-state">
-							<div>Loading models...</div>
+					<form id="upload-form">
+						<div class="upload-grid">
+							<div class="form-group">
+								<label for="upload-id">ID</label>
+								<input
+									type="text"
+									id="upload-id"
+									placeholder="my_model_v1"
+									required
+								/>
+							</div>
+							<div class="form-group">
+								<label for="upload-name">Name</label>
+								<input
+									type="text"
+									id="upload-name"
+									placeholder="My Model"
+									required
+								/>
+							</div>
+							<div class="form-group">
+								<label for="upload-version">Version</label>
+								<input
+									type="text"
+									id="upload-version"
+									placeholder="v1.0.0"
+									required
+								/>
+							</div>
+							<div class="form-group full-width">
+								<label>Model File</label>
+								<div class="file-drop">
+									<input
+										type="file"
+										id="upload-file"
+										accept=".onnx"
+										required
+									/>
+									<span class="file-drop-text"
+										>Select .onnx file</span
+									>
+									<span class="file-drop-name" id="file-name"></span>
+								</div>
+							</div>
+							<div class="form-group full-width">
+								<button type="submit" id="upload-btn">
+									Upload & Register
+								</button>
+							</div>
 						</div>
-					</div>
+					</form>
+					<div id="upload-result" class="result-area"></div>
 				</div>
 			</div>
 
 			<footer>
-				<div>Built with Go, ONNX Runtime & Clean Architecture</div>
-				<div class="footer-links">
-					<a href="https://github.com/kevo-1/model-nexus" class="footer-link" target="_blank">GitHub</a>
-					<a href="/metrics" class="footer-link" target="_blank">Metrics</a>
-					<a href="/health" class="footer-link" target="_blank">Health Check</a>
+				<span>Go + ONNX Runtime</span>
+				<div>
+					<a href="/metrics">Metrics</a>
+					<a href="/health">Health</a>
+					<a href="https://github.com/kevo-1/model-nexus">GitHub</a>
 				</div>
 			</footer>
 		</div>
 
 		<script>
-			const API_BASE = "https://model-nexus.up.railway.app";
+			const API_BASE = "http://localhost:8080";
 
 			// Elements
 			const statusBadge = document.getElementById("server-status");
 			const modelSelect = document.getElementById("model-select");
 			const predictionForm = document.getElementById("prediction-form");
-			const inputData = document.getElementById("input-data");
+			const featuresContainer = document.getElementById("features-container");
 			const predictBtn = document.getElementById("predict-btn");
 			const resultArea = document.getElementById("result-area");
 			const modelsList = document.getElementById("models-list");
 
-			// Stats elements
+			// Upload elements
+			const uploadForm = document.getElementById("upload-form");
+			const uploadIdInput = document.getElementById("upload-id");
+			const uploadNameInput = document.getElementById("upload-name");
+			const uploadVersionInput = document.getElementById("upload-version");
+			const uploadFileInput = document.getElementById("upload-file");
+			const fileNameDisplay = document.getElementById("file-name");
+			const uploadBtn = document.getElementById("upload-btn");
+			const uploadResultArea = document.getElementById("upload-result");
+
+			// Stats
 			const statModels = document.getElementById("stat-models");
 			const statPredictions = document.getElementById("stat-predictions");
 			const statLatency = document.getElementById("stat-latency");
 			const statSuccess = document.getElementById("stat-success");
 
-			// Local state
+			// State
 			let totalPredictions = 0;
 			let successfulPredictions = 0;
 			let totalLatency = 0;
+			let modelsCache = []; // stores {id, name, version, info}
 
-			// Check Health
+			// DType labels
+			const dtypeLabels = {
+				1: "float32", 2: "uint8", 3: "int8", 4: "uint16", 5: "int16",
+				6: "int32", 7: "int64", 8: "string", 9: "bool", 11: "float64",
+			};
+
+			// File input handler
+			uploadFileInput.addEventListener("change", () => {
+				if (uploadFileInput.files.length > 0) {
+					const file = uploadFileInput.files[0];
+					fileNameDisplay.textContent = file.name;
+					if (!uploadIdInput.value) {
+						uploadIdInput.value = file.name.replace(/\.onnx$/, "");
+					}
+				} else {
+					fileNameDisplay.textContent = "";
+				}
+			});
+
+			// Upload form handler
+			uploadForm.addEventListener("submit", async (e) => {
+				e.preventDefault();
+				const modelId = uploadIdInput.value.trim();
+				const modelName = uploadNameInput.value.trim();
+				const modelVersion = uploadVersionInput.value.trim();
+				const file = uploadFileInput.files[0];
+
+				if (!modelId || !modelName || !modelVersion || !file) {
+					showUploadResult("Fill in all fields and select a file.", true);
+					return;
+				}
+				if (!file.name.endsWith(".onnx")) {
+					showUploadResult("Select a .onnx file.", true);
+					return;
+				}
+
+				uploadBtn.disabled = true;
+				uploadBtn.textContent = "Uploading...";
+				uploadResultArea.style.display = "none";
+
+				const formData = new FormData();
+				formData.append("id", modelId);
+				formData.append("name", modelName);
+				formData.append("version", modelVersion);
+				formData.append("model", file);
+
+				try {
+					const res = await fetch(`${API_BASE}/models/upload`, {
+						method: "POST",
+						body: formData,
+					});
+					const data = await res.json();
+
+					if (!res.ok) {
+						let msg = "Failed to upload.";
+						if (res.status === 409) msg = `Model "${modelId}" already exists.`;
+						else if (data && data.error) msg = data.error;
+						showUploadResult(msg, true);
+					} else {
+						const io = data.info.inputs.map(i => `${i.name}${JSON.stringify(i.shape)}`).join("  ") + " → " + data.info.outputs.map(o => `${o.name}${JSON.stringify(o.shape)}`).join("  ");
+						showUploadResult(`✓ ${data.model.name} registered\n${io}`, false);
+						uploadForm.reset();
+						fileNameDisplay.textContent = "";
+						fetchModels();
+					}
+				} catch (e) {
+					showUploadResult("Connection failed.", true);
+				} finally {
+					uploadBtn.disabled = false;
+					uploadBtn.textContent = "Upload & Register";
+				}
+			});
+
+			function showUploadResult(content, isError) {
+				uploadResultArea.textContent = content;
+				uploadResultArea.style.display = "block";
+				uploadResultArea.className = "result-area " + (isError ? "error" : "success");
+			}
+
+			// Health
 			async function checkHealth() {
 				try {
 					const res = await fetch(`${API_BASE}/health`);
 					if (res.ok) {
-						statusBadge.querySelector('span').textContent = 'System Online';
-						statusBadge.classList.add('online');
-						statusBadge.classList.remove('offline');
-					} else {
-						throw new Error("Health check failed");
-					}
-				} catch (error) {
-					statusBadge.querySelector('span').textContent = 'System Offline';
-					statusBadge.classList.add('offline');
-					statusBadge.classList.remove('online');
-					console.error("Health check error:", error);
+						statusBadge.querySelector("span").textContent = "Online";
+						statusBadge.classList.add("online");
+					} else throw new Error("fail");
+				} catch {
+					statusBadge.querySelector("span").textContent = "Offline";
+					statusBadge.classList.add("offline");
 				}
 			}
 
@@ -691,262 +674,235 @@
 			async function fetchModels() {
 				try {
 					const res = await fetch(`${API_BASE}/models`);
-					if (!res.ok) throw new Error("Failed to fetch models");
-
+					if (!res.ok) throw new Error("fail");
 					const data = await res.json();
-					const models = data.models || [];
+					modelsCache = data.models || [];
 
-					// Update stats
-					statModels.textContent = models.length;
+					statModels.textContent = data.count || 0;
 
-					// Update select dropdown
 					modelSelect.innerHTML = '<option value="" disabled selected>Select a model</option>';
-					models.forEach((model) => {
-						const option = document.createElement("option");
-						option.value = model;
-						option.textContent = model;
-						modelSelect.appendChild(option);
+					modelsCache.forEach((m) => {
+						const opt = document.createElement("option");
+						opt.value = m.id;
+						opt.textContent = m.name;
+						modelSelect.appendChild(opt);
 					});
 
-					// Update models list
-					if (models.length === 0) {
-						modelsList.innerHTML = `
-							<div class="empty-state">
-								<div>No models available</div>
-							</div>
-						`;
+					if (modelsCache.length === 0) {
+						modelsList.innerHTML = '<div class="empty-state">No models</div>';
 					} else {
-						modelsList.innerHTML = models.map(model => `
-							<div class="model-item" onclick="selectModel('${model}')">
-								<div class="model-name">${model}</div>
-								<div class="model-meta">Ready for inference</div>
+						modelsList.innerHTML = modelsCache.map(m => `
+							<div class="model-item" onclick="selectModel('${m.id}')">
+								<div class="model-name">${m.name}</div>
+								<div class="model-meta">${m.id} · ${m.version}</div>
 							</div>
-						`).join('');
+						`).join("");
 					}
-				} catch (error) {
-					console.error("Error fetching models:", error);
-					modelSelect.innerHTML = '<option value="" disabled>Error loading models</option>';
-					modelsList.innerHTML = `
-						<div class="empty-state">
-							<div>Failed to load models</div>
-						</div>
-					`;
-					statModels.textContent = '0';
+
+					// Reset feature fields
+					buildFeatureFields();
+				} catch {
+					modelSelect.innerHTML = '<option value="" disabled>Error</option>';
+					modelsList.innerHTML = '<div class="empty-state">Failed to load</div>';
 				}
 			}
 
-			// Select model from list
-			window.selectModel = function(modelId) {
-				modelSelect.value = modelId;
-				modelSelect.dispatchEvent(new Event('change'));
+			window.selectModel = function (id) {
+				modelSelect.value = id;
+				modelSelect.dispatchEvent(new Event("change"));
+			};
+
+			// Build feature input fields based on model metadata
+			function buildFeatureFields() {
+				featuresContainer.innerHTML = "";
+				const selectedId = modelSelect.value;
+				const model = modelsCache.find(m => m.id === selectedId);
+
+				if (!model) {
+					featuresContainer.innerHTML = '<div class="no-model-prompt">Select a model to see required inputs</div>';
+					return;
+				}
+
+				const url = `${API_BASE}/models/info?id=${encodeURIComponent(selectedId)}`;
+
+				fetch(url)
+					.then(r => {
+						if (!r.ok) throw new Error(`HTTP ${r.status}`);
+						return r.json();
+					})
+					.then(info => {
+						console.log("Model info received:", info);
+
+						if (!info.inputs || info.inputs.length === 0) {
+							featuresContainer.innerHTML = `<div class="no-model-prompt">No input metadata for "${model.name}". Enter features as JSON.</div>`;
+							return;
+						}
+
+						// Flatten all input tensors' last positive dimension into individual fields
+						const fields = [];
+						let globalIdx = 0;
+
+						info.inputs.forEach((input) => {
+							const featureCount = getFeatureCount(input.shape);
+							const dtype = dtypeLabels[input.dtype] || "float32";
+							const shapeStr = input.shape ? `[${input.shape.join(", ")}]` : "";
+
+							if (featureCount > 0 && featureCount <= 100) {
+								// Create individual fields
+								for (let i = 0; i < featureCount; i++) {
+									fields.push({
+										idx: globalIdx++,
+										name: input.name ? `${input.name}[${i}]` : `Feature ${globalIdx}`,
+										dtype,
+										placeholder: String(i + 1),
+									});
+								}
+							} else {
+								// Too many or unknown — single field with note
+								fields.push({
+									idx: globalIdx,
+									name: input.name || `Input ${globalIdx + 1}`,
+									dtype,
+									placeholder: shapeStr || "values",
+								});
+								globalIdx++;
+							}
+						});
+
+						if (fields.length === 0) {
+							featuresContainer.innerHTML = `<div class="no-model-prompt">No feature fields to render for "${model.name}".</div>`;
+							return;
+						}
+
+						const totalFeatures = fields.length;
+						let html = `<div class="section-title" style="margin-top:0.5rem;margin-bottom:0.75rem">${totalFeatures} Input Feature${totalFeatures > 1 ? "s" : ""}</div><div class="feature-grid">`;
+
+						fields.forEach((f) => {
+							html += `
+								<div class="feature-field form-group">
+									<label>
+										${f.name}
+										<span class="dtype-tag">${f.dtype}</span>
+									</label>
+									<input type="number" step="any" data-feature-idx="${f.idx}" data-feature-name="${f.name}" placeholder="${f.placeholder}" required />
+								</div>
+							`;
+						});
+
+						html += "</div>";
+						featuresContainer.innerHTML = html;
+					})
+					.catch(err => {
+						console.error("Failed to fetch model info:", err);
+						featuresContainer.innerHTML = `<div class="no-model-prompt">Could not load fields for "${model.name}" (${err.message}).</div>`;
+					});
 			}
 
-			// Handle Prediction
+			// Get the last positive dimension from the shape (feature count)
+			function getFeatureCount(shape) {
+				if (!shape || shape.length === 0) return 0;
+				// Walk from end to find last positive dimension
+				for (let i = shape.length - 1; i >= 0; i--) {
+					if (shape[i] > 0) return shape[i];
+				}
+				return 0;
+			}
+
+			modelSelect.addEventListener("change", buildFeatureFields);
+
+			// Prediction handler — collects from individual feature fields
 			predictionForm.addEventListener("submit", async (e) => {
 				e.preventDefault();
-				const modelName = modelSelect.value;
-				const rawInput = inputData.value.trim();
-
-				// Validation errors - don't count toward success rate
-				if (!modelName) {
-					const errorHTML = `
-						<div class="result-header">Validation Error</div>
-						<div class="result-content">Please select a model from the dropdown.</div>
-					`;
-					showResult(errorHTML, true);
+				const modelId = modelSelect.value;
+				if (!modelId) {
+					showResult("Select a model first.", true);
 					return;
 				}
 
-				if (!rawInput) {
-					const errorHTML = `
-						<div class="result-header">Validation Error</div>
-						<div class="result-content">Please enter input features. Example: [5.1, 3.5, 1.4, 0.2]</div>
-					`;
-					showResult(errorHTML, true);
+				// Collect feature values
+				const inputs = featuresContainer.querySelectorAll("input[type='number']");
+				if (inputs.length === 0) {
+					// Fallback: use raw JSON textarea if no feature fields
+					const rawInput = prompt("Enter features as JSON array, e.g. [5.1, 3.5, 1.4, 0.2]");
+					if (!rawInput) return;
+					try {
+						const features = JSON.parse(rawInput);
+						if (!Array.isArray(features)) throw new Error();
+						await runPrediction(modelId, features);
+					} catch {
+						showResult("Invalid JSON array.", true);
+					}
 					return;
 				}
 
-				let parsedInput;
-				try {
-					parsedInput = JSON.parse(rawInput);
-				} catch (error) {
-					const errorHTML = `
-						<div class="result-header">Invalid Format</div>
-						<div class="result-content">Please enter a valid list of numbers in square brackets. Example: [5.1, 3.5, 1.4, 0.2]</div>
-					`;
-					showResult(errorHTML, true);
-					return;
+				const features = [];
+				for (const inp of inputs) {
+					const val = parseFloat(inp.value);
+					if (isNaN(val)) {
+						showResult(`"${inp.dataset.featureName || inp.placeholder}" is empty.`, true);
+						return;
+					}
+					features.push(val);
 				}
 
-				// Check if it's an array
-				if (!Array.isArray(parsedInput)) {
-					const errorHTML = `
-						<div class="result-header">Invalid Format</div>
-						<div class="result-content">Input must be a list of numbers in square brackets. Example: [5.1, 3.5, 1.4, 0.2]</div>
-					`;
-					showResult(errorHTML, true);
-					return;
-				}
+				await runPrediction(modelId, features);
+			});
 
-				// Check if all elements are numbers
-				if (!parsedInput.every(item => typeof item === 'number' && !isNaN(item))) {
-					const errorHTML = `
-						<div class="result-header">Invalid Data</div>
-						<div class="result-content">All values must be numbers. Example: [5.1, 3.5, 1.4, 0.2]</div>
-					`;
-					showResult(errorHTML, true);
-					return;
-				}
-
+			async function runPrediction(modelId, features) {
 				predictBtn.disabled = true;
-				predictBtn.innerHTML = `
-					<span class="button-content">
-						<span class="spinner"></span>
-						<span>Running...</span>
-					</span>
-				`;
+				predictBtn.textContent = "Running...";
 				resultArea.style.display = "none";
 
-				const startTime = performance.now();
-
+				const start = performance.now();
 				try {
 					const res = await fetch(`${API_BASE}/predict`, {
 						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							model_id: modelName,
-							features: parsedInput,
-						}),
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ model_id: modelId, features }),
 					});
+					const elapsed = (performance.now() - start).toFixed(1);
 
-					const endTime = performance.now();
-					const clientLatency = (endTime - startTime).toFixed(2);
-
-					// Try to parse response body
 					let data;
-					let errorText;
-					try {
-						data = await res.json();
-					} catch (parseError) {
-						// If response isn't JSON, get text
-						errorText = await res.text();
-					}
+					try { data = await res.json(); } catch { data = null; }
 
 					if (!res.ok) {
-						// Only count as failed prediction if it's a 4xx or 5xx error
 						totalPredictions++;
-						
-						let errorMessage = 'Something went wrong with your request.';
-
-						if (data && data.error) {
-							// Make backend errors more user-friendly
-							const backendError = data.error.toLowerCase();
-							
-							if (backendError.includes('expected') && backendError.includes('features')) {
-								// Parse "expected 4 features, got 3" type messages
-								const match = data.error.match(/expected (\d+) features, got (\d+)/i);
-								if (match) {
-									errorMessage = `This model needs exactly ${match[1]} input values, but you provided ${match[2]}. Please adjust your input.`;
-								} else {
-									errorMessage = 'Wrong number of input features. Please check your model requirements.';
-								}
-							} else if (backendError.includes('invalid input')) {
-								errorMessage = 'Invalid input format. Please make sure you\'re providing the correct data for this model.';
-							} else if (backendError.includes('model not found')) {
-								errorMessage = 'This model is no longer available. Please select a different model from the list.';
-							} else {
-								// Use backend message if it's already user-friendly
-								errorMessage = data.error;
-							}
-						} else if (errorText) {
-							errorMessage = errorText;
-						}
-
-						// Add friendly context based on status code
-						if (res.status === 404) {
-							errorMessage = 'Model not found. Please refresh the page and select a different model.';
-						} else if (res.status === 500) {
-							errorMessage = 'The model encountered an error. Please try again in a moment.';
-						}
-
-						const errorHTML = `
-							<div class="result-header">Request Failed</div>
-							<div class="result-content">${errorMessage}</div>
-						`;
-						showResult(errorHTML, true);
+						const msg = data?.error || `Server error (${res.status})`;
+						showResult(msg, true);
 					} else {
-						// Count as successful prediction
 						totalPredictions++;
 						successfulPredictions++;
-						totalLatency += parseFloat(data.latency_ms || clientLatency);
-						
-						const resultHTML = `
-							<div class="result-header">Prediction Complete</div>
-							<div class="result-content">${JSON.stringify(data, null, 2)}</div>
-						`;
-						showResult(resultHTML, false);
+						totalLatency += parseFloat(data?.latency_ms || elapsed);
+						showResult(JSON.stringify(data, null, 2), false);
+						updateStats();
 					}
-
-					updateStats();
-				} catch (error) {
-					// Network error - DON'T count toward success rate
-					// This is a connectivity issue, not a prediction failure
-					console.error("Prediction error:", error);
-					const errorHTML = `
-						<div class="result-header">Connection Error</div>
-						<div class="result-content">Could not reach the server. Please check your internet connection and try again.</div>
-					`;
-					showResult(errorHTML, true);
-					// Note: NOT incrementing totalPredictions here
+				} catch {
+					showResult("Connection failed.", true);
 				} finally {
 					predictBtn.disabled = false;
-					predictBtn.innerHTML = `
-						<span class="button-content">
-							<span>Run Prediction</span>
-						</span>
-					`;
+					predictBtn.textContent = "Predict";
 				}
-			});
+			}
 
-			// Show result
 			function showResult(content, isError) {
-				resultArea.innerHTML = content;
+				resultArea.textContent = content;
 				resultArea.style.display = "block";
 				resultArea.className = "result-area " + (isError ? "error" : "success");
 			}
 
-			// Update stats
 			function updateStats() {
 				statPredictions.textContent = totalPredictions;
-				
 				if (totalPredictions > 0) {
-					const avgLatency = (totalLatency / successfulPredictions).toFixed(2);
-					statLatency.innerHTML = `${avgLatency}<span class="stat-unit">ms</span>`;
-					
-					const successRate = ((successfulPredictions / totalPredictions) * 100).toFixed(1);
-					statSuccess.innerHTML = `${successRate}<span class="stat-unit">%</span>`;
-				} else {
-					statPredictions.textContent = '0';
-					statLatency.innerHTML = '0<span class="stat-unit">ms</span>';
-					statSuccess.innerHTML = '0<span class="stat-unit">%</span>';
+					const avg = (totalLatency / successfulPredictions).toFixed(1);
+					statLatency.innerHTML = `${avg}<span class="stat-unit">ms</span>`;
+					const rate = ((successfulPredictions / totalPredictions) * 100).toFixed(0);
+					statSuccess.innerHTML = `${rate}<span class="stat-unit">%</span>`;
 				}
 			}
 
-			// Example chips
-			document.querySelectorAll('.example-chip').forEach(chip => {
-				chip.addEventListener('click', () => {
-					inputData.value = chip.getAttribute('data-example');
-				});
-			});
-
-			// Initialize
+			// Init
 			checkHealth();
 			fetchModels();
-			updateStats();
-
-			// Refresh models every 30 seconds
 			setInterval(fetchModels, 30000);
 		</script>
 	</body>
