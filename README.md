@@ -30,7 +30,8 @@ Built using **Clean Architecture** principles with clear separation of concerns:
 ┌─────────────────────────────────────────────────────────┐
 │                    HTTP Request                          │
 ├─────────────────────────────────────────────────────────┤
-│  Middleware Stack: CORS → RequestID → Metrics            │
+│  Middleware Stack (execution order):                     │
+│    1. Metrics (outermost) → 2. RequestID → 3. CORS       │
 ├─────────────────────────────────────────────────────────┤
 │  Handler Layer     → Request validation & response       │
 │  Service Layer     → Business logic (PredictionService)  │
@@ -214,7 +215,8 @@ curl -X POST http://localhost:8080/predict \
 **Response (200 OK):**
 ```json
 {
-  "status": "healthy"
+  "status": "ok",
+  "timestamp": "2026-04-05T10:30:00Z"
 }
 ```
 

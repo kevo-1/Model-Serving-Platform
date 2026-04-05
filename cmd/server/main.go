@@ -80,7 +80,11 @@ func main() {
 
 	// Step 4: Graceful shutdown
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(sigChan, os.Interrupt)
+	// SIGTERM is not available on Windows; only os.Interrupt is cross-platform
+	if runtime.GOOS != "windows" {
+		signal.Notify(sigChan, syscall.SIGTERM)
+	}
 
 	srv := &http.Server{
 		Addr:    addr,

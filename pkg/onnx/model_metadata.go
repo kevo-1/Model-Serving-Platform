@@ -58,12 +58,18 @@ func LoadModelInfo(modelPath string) (*ModelInfo, error) {
 
 func (m *ModelInfo) InputSize() int {
 	shape := m.Inputs[0].Shape
-	for i := len(shape) - 1; i >= 0; i-- {
-		if shape[i] > 0 {
-			return int(shape[i])
+	size := int64(1)
+	hasPositiveDim := false
+	for _, dim := range shape {
+		if dim > 0 {
+			size *= dim
+			hasPositiveDim = true
 		}
 	}
-	return -1
+	if !hasPositiveDim {
+		return -1
+	}
+	return int(size)
 }
 
 func (m *ModelInfo) InputNames() []string {

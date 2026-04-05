@@ -3,7 +3,6 @@ package http
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/kevo-1/model-nexus/internal/logger"
 	"github.com/kevo-1/model-nexus/pkg/onnx"
@@ -23,15 +22,8 @@ func (h *Handler) handleModelInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Extract model ID from path: /models/info?id=xxx
+	// Extract model ID from query parameter
 	modelID := r.URL.Query().Get("id")
-	if modelID == "" {
-		// Fallback: try path-based extraction /models/{id}/info
-		path := strings.TrimPrefix(r.URL.Path, "/models/")
-		path = strings.TrimSuffix(path, "/info")
-		modelID = path
-	}
-
 	if modelID == "" {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)

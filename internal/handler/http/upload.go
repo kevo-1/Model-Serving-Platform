@@ -24,7 +24,7 @@ func (h *Handler) handleUploadModel(w http.ResponseWriter, r *http.Request) {
 
 	if err := r.ParseMultipartForm(32 << 20); err != nil { // 32MB in memory, rest on disk
 		logger.Warn("failed to parse multipart form", "request_id", requestID, "error", err)
-		http.Error(w, "Failed to parse form: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Failed to parse form: request may be too large or malformed", http.StatusBadRequest)
 		return
 	}
 
@@ -39,10 +39,10 @@ func (h *Handler) handleUploadModel(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Extract the file
-	file, header, err := r.FormFile("model")
+	file, header, err := r.FormFile("file")
 	if err != nil {
 		logger.Warn("failed to get model file from form", "request_id", requestID, "error", err)
-		http.Error(w, "model file is required (form field: 'model')", http.StatusBadRequest)
+		http.Error(w, "model file is required (form field: 'file')", http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
@@ -73,7 +73,7 @@ func (h *Handler) handleUploadModel(w http.ResponseWriter, r *http.Request) {
 				"model_id", modelID,
 				"error", err,
 			)
-			http.Error(w, "Failed to register model: "+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Failed to register model", http.StatusInternalServerError)
 		}
 		return
 	}

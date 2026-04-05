@@ -2,7 +2,7 @@ package onnx
 
 import (
 	"context"
-	"math/rand"
+	"math/rand/v2"
 	"time"
 
 	"github.com/kevo-1/model-nexus/internal/domain"
@@ -38,7 +38,7 @@ func (p *DummyPredictor) Predict(ctx context.Context, features []float64) ([]flo
 	default:
 	}
 
-	delay := time.Duration(rand.Intn(10)+1) * time.Millisecond
+	delay := time.Duration(rand.IntN(10)+1) * time.Millisecond
 	timer := time.NewTimer(delay)
 
 	select {

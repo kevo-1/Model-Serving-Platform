@@ -13,16 +13,12 @@ func (e *ModelNotFoundError) Error() string {
 }
 
 type InvalidInputError struct {
-	Message  string
 	Expected int
 	Got      int
 }
 
 func (e *InvalidInputError) Error() string {
-	if e.Expected > 0 {
-		return fmt.Sprintf("invalid input: expected %d features, got %d", e.Expected, e.Got)
-	}
-	return fmt.Sprintf("invalid input: %s", e.Message)
+	return fmt.Sprintf("invalid input: expected %d features, got %d", e.Expected, e.Got)
 }
 
 type PredictionError struct {
