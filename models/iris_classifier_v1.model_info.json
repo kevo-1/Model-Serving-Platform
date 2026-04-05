@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    {
+      "name": "X",
+      "shape": [
+        0,
+        4
+      ],
+      "dtype": 11
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output_label",
+      "shape": [
+        0
+      ],
+      "dtype": 7
+    },
+    {
+      "name": "output_probability",
+      "shape": [],
+      "dtype": 0
+    }
+  ]
+}

@@ -10,39 +10,49 @@ import (
 )
 
 type ONNXPredictor struct {
-	ID string
-	Name string
-	Path string
-	Version string
+    ID      string
+    Name    string
+    Path    string
+    Version string
+    Info    *ModelInfo
 
-	session *ort.DynamicSession[float64, int64]
+    session     *ort.DynamicSession[float64, int64]
+    inputNames  []string
+    outputNames []string
+    inputShape  []int64
+    outputShape []int64
 
-	inputName string
-	outputName string
-
-	inputShape []int64
-	outputShape []int64
-
-	mu sync.Mutex
+    mu sync.Mutex
 }
 
-
-//FIXME: Change the static/hard coded behaviour of extracting model info
 func NewONNXPredictor(id, name, version, path string) (*ONNXPredictor, error) {
     if id == "" || name == "" || path == "" {
         return nil, fmt.Errorf("id, name, and path cannot be empty")
     }
 
-    inputShape := ort.NewShape(1, 4)
-    outputShape := ort.NewShape(1)
+    info, err := LoadModelInfo(path)
+    if err != nil {
+        return nil, fmt.Errorf("failed to load model info for %s: %w", path, err)
+    }
 
-    inputNames := []string{"X"}
-    outputNames := []string{"output_label"}
+    inputShape := ort.NewShape(info.Inputs[0].Shape...)
+    outputShape := ort.NewShape(info.Outputs[0].Shape...)
+
+    for i, d := range inputShape {
+        if d == 0 {
+            inputShape[i] = 1
+        }
+    }
+    for i, d := range outputShape {
+        if d == 0 {
+            outputShape[i] = 1
+        }
+    }
 
     session, err := ort.NewDynamicSession[float64, int64](
         path,
-        inputNames,
-        outputNames,
+        info.InputNames(),
+        info.OutputNames(),
     )
     if err != nil {
         return nil, fmt.Errorf("failed to create ONNX session: %w", err)
@@ -53,18 +63,19 @@ func NewONNXPredictor(id, name, version, path string) (*ONNXPredictor, error) {
         Name:        name,
         Version:     version,
         Path:        path,
+        Info:        info,
         session:     session,
-        inputName:   inputNames[0],
-        outputName:  outputNames[0],
+        inputNames:  info.InputNames(),
+        outputNames: info.OutputNames(),
         inputShape:  inputShape,
         outputShape: outputShape,
     }, nil
 }
 
-
 func (p *ONNXPredictor) Predict(ctx context.Context, features []float64) ([]float64, error) {
-    if len(features) != 4 {
-        return nil, &domain.InvalidInputError{Expected: 4, Got: len(features)}
+    expectedSize := p.Info.InputSize()
+    if expectedSize > 0 && len(features) != expectedSize {
+        return nil, &domain.InvalidInputError{Expected: expectedSize, Got: len(features)}
     }
 
     select {
@@ -73,15 +84,10 @@ func (p *ONNXPredictor) Predict(ctx context.Context, features []float64) ([]floa
     default:
     }
 
-	p.mu.Lock()
-	defer p.mu.Unlock()
+    p.mu.Lock()
+    defer p.mu.Unlock()
 
-    features32 := make([]float64, len(features))
-    for i, value := range features {
-        features32[i] = float64(value)
-    }
-
-    inputTensor, err := ort.NewTensor(p.inputShape, features32)
+    inputTensor, err := ort.NewTensor(p.inputShape, features)
     if err != nil {
         return nil, &domain.PredictionError{ModelID: p.ID, Cause: err}
     }
@@ -93,31 +99,30 @@ func (p *ONNXPredictor) Predict(ctx context.Context, features []float64) ([]floa
     }
     defer outputTensor.Destroy()
 
-    err = p.session.Run([]*ort.Tensor[float64]{inputTensor}, []*ort.Tensor[int64]{outputTensor})
+    err = p.session.Run(
+        []*ort.Tensor[float64]{inputTensor},
+        []*ort.Tensor[int64]{outputTensor},
+    )
     if err != nil {
         return nil, &domain.PredictionError{ModelID: p.ID, Cause: err}
     }
 
-    res := outputTensor.GetData()
-
-    output := make([]float64, len(res))
-    for i, value := range res {
-        output[i] = float64(value)
+    raw := outputTensor.GetData()
+    output := make([]float64, len(raw))
+    for i, v := range raw {
+        output[i] = float64(v)
     }
-
     return output, nil
 }
 
-
 func (p *ONNXPredictor) Metadata() domain.ModelMetadata {
     return domain.ModelMetadata{
-        ID: p.ID,
-        Name: p.Name,
-        Path: p.Path,
+        ID:      p.ID,
+        Name:    p.Name,
+        Path:    p.Path,
         Version: p.Version,
     }
 }
-
 
 func (p *ONNXPredictor) Close() error {
     if p.session != nil {
