@@ -544,7 +544,7 @@
 		</div>
 
 		<script>
-			const API_BASE = "https://model-nexus.up.railway.app";
+			const API_BASE = "";
 
 			// Elements
 			const statusBadge = document.getElementById("server-status");
@@ -621,7 +621,7 @@
 				formData.append("id", modelId);
 				formData.append("name", modelName);
 				formData.append("version", modelVersion);
-				formData.append("model", file);
+				formData.append("file", file);
 
 				try {
 					const res = await fetch(`${API_BASE}/models/upload`, {
