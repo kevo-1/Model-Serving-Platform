@@ -69,10 +69,9 @@ func NewONNXPredictor(id, name, version, path string) (*ONNXPredictor, error) {
 	// Filter outputs to only tensor types (dtype > 0)
 	// Skip Map/Sequence/SequenceMap types which have dtype == 0
 	type outputMeta struct {
-		name   string
-		dtype  ONNXDtype
-		shape  []int64
-		ortIdx int // index into the output tensors list
+		name  string
+		dtype ONNXDtype
+		shape []int64
 	}
 	var validOutputs []outputMeta
 	for _, out := range info.Outputs {

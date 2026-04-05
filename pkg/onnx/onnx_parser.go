@@ -7,6 +7,29 @@ import (
 	"google.golang.org/protobuf/encoding/protowire"
 )
 
+// ONNX Protobuf Parser
+//
+// This file implements a pure-Go ONNX metadata extractor using raw protowire parsing.
+// It avoids the need for Python or generated proto structs, which simplifies Docker
+// builds and reduces dependencies.
+//
+// TRADE-OFFS & LIMITATIONS:
+// - Manual protobuf parsing is fragile: if the ONNX spec changes field numbers or
+//   wire types, this parser will break silently or return incorrect data.
+// - Only extracts metadata needed for inference (inputs, outputs, dtypes, shapes).
+//   Does not validate the full model structure.
+// - Assumes ONNX v1.0+ spec field numbers from:
+//   https://github.com/onnx/onnx/blob/main/onnx/onnx.proto
+//
+// If you encounter parsing errors with a valid ONNX model, the model may use a
+// different spec version or optional fields not handled here. In that case,
+// consider using the official ONNX Python package to inspect model metadata.
+//
+// WHY NOT USE PYTHON?
+// Using Python at runtime would require bundling a Python runtime in the Docker
+// image, increasing complexity and image size. This approach keeps the container
+// minimal and Go-only, at the cost of some parsing fragility.
+
 // Field numbers from the ONNX protobuf spec:
 // https://github.com/onnx/onnx/blob/main/onnx/onnx.proto
 //

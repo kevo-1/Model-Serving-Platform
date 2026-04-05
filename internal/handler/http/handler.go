@@ -29,7 +29,13 @@ func (h *Handler) SetupRoutes() http.Handler {
 	mux.HandleFunc("/health", h.handleHealth)
 	mux.HandleFunc("/models/upload", h.handleUploadModel)
 	mux.HandleFunc("/models/info", h.handleModelInfo)
-	mux.HandleFunc("/models", h.handleListModels)
+	mux.HandleFunc("/models", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		h.handleListModels(w, r)
+	})
 	mux.Handle("/metrics", promhttp.Handler())
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

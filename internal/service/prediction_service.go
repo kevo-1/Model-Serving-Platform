@@ -15,29 +15,29 @@ type PredictionService struct {
 }
 
 func NewPredictionService(registry *repository.ModelRegistry) *PredictionService {
-    return &PredictionService{
-        registry: registry,
-    }
+	return &PredictionService{
+		registry: registry,
+	}
 }
 
 func (s *PredictionService) Predict(ctx context.Context, req domain.PredictionRequest) (domain.PredictionResponse, error) {
-    //validate request
-	if err := req.Validate();err != nil {
+	//validate request
+	if err := req.Validate(); err != nil {
 		return domain.PredictionResponse{}, err
 	}
-	
-    //generate RequestID if empty
+
+	//generate RequestID if empty
 	requestID := logger.GetRequestID(ctx)
 
 	// If request came without ID, use the one from context
 	if req.RequestID == "" {
 		req.RequestID = requestID
 	}
-    
-    //get model from registry
+
+	//get model from registry
 	model, err := s.registry.Get(req.ModelID)
 	if err != nil {
-		logger.Error("model not found in registry", 
+		logger.Error("model not found in registry",
 			"request_id", req.RequestID,
 			"model_id", req.ModelID,
 			"error", err,
@@ -45,41 +45,40 @@ func (s *PredictionService) Predict(ctx context.Context, req domain.PredictionRe
 		return domain.PredictionResponse{}, err
 	}
 
-    
-	logger.Info("prediction started", "request_id",req.RequestID, "model_id", req.ModelID)
-    inferenceStart := time.Now()
-    prediction, err := model.Predict(ctx, req.Features)
-    inferenceDuration := time.Since(inferenceStart).Seconds()
-    
-    // Record metrics
-    success := err == nil
-    metrics.RecordPrediction(req.ModelID, success, inferenceDuration)
-    
-    if err != nil {
-		logger.Error("prediction failed", 
+	logger.Info("prediction started", "request_id", req.RequestID, "model_id", req.ModelID)
+	inferenceStart := time.Now()
+	prediction, err := model.Predict(ctx, req.Features)
+	inferenceDuration := time.Since(inferenceStart).Seconds()
+
+	// Record metrics
+	success := err == nil
+	metrics.RecordPrediction(req.ModelID, success, inferenceDuration)
+
+	if err != nil {
+		logger.Error("prediction failed",
 			"request_id", req.RequestID,
 			"model_id", req.ModelID,
 			"error", err,
 		)
-        return domain.PredictionResponse{}, err
-    }
+		return domain.PredictionResponse{}, err
+	}
 
-	logger.Info("prediction completed", 
+	logger.Info("prediction completed",
 		"request_id", req.RequestID,
 		"model_id", req.ModelID,
-		"latency_ms", inferenceDuration * 1000,
+		"latency_ms", inferenceDuration*1000,
 		"status", "success",
 	)
 
-    //Build response with timing
-	totalLatency := float64(time.Since(inferenceStart).Microseconds()) / 1000
-	
+	//Build response with actual inference duration
+	totalLatency := inferenceDuration * 1000 // convert seconds to milliseconds
+
 	response := domain.PredictionResponse{
-		ModelID: req.ModelID,
-		RequestID: req.RequestID,
-		LatencyMs: totalLatency,
+		ModelID:    req.ModelID,
+		RequestID:  req.RequestID,
+		LatencyMs:  totalLatency,
 		Prediction: prediction,
-		Timestamp: time.Now(),
+		Timestamp:  time.Now(),
 	}
 
 	return response, nil

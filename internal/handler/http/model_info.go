@@ -33,7 +33,9 @@ func (h *Handler) handleModelInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if modelID == "" {
-		http.Error(w, `{"error":"model ID is required"}`, http.StatusBadRequest)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "model ID is required"})
 		return
 	}
 

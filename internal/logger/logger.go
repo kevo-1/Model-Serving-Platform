@@ -1,23 +1,23 @@
 package logger
 
 import (
-	"log/slog"
 	"context"
+	"log/slog"
 	"os"
 )
 
 var logger *slog.Logger
 
 type contextKey string
+
 const RequestIDKey contextKey = "request_id"
 
 func GetRequestID(ctx context.Context) string {
-    if id, ok := ctx.Value(RequestIDKey).(string); ok {
-        return id
-    }
-    return "unknown"
+	if id, ok := ctx.Value(RequestIDKey).(string); ok {
+		return id
+	}
+	return "unknown"
 }
-
 
 func Init() {
 	handler := slog.NewJSONHandler(os.Stdout, nil)

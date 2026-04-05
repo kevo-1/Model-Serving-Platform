@@ -60,13 +60,17 @@ func (s *ModelService) RegisterModel(req RegisterModelRequest) (*RegisterModelRe
 	info, err := onnx.ExtractModelInfo(onnxPath)
 	if err != nil {
 		// Clean up the saved file if parsing fails
-		os.Remove(onnxPath)
+		if rmErr := os.Remove(onnxPath); rmErr != nil {
+			logger.Warn("failed to cleanup model file", "path", onnxPath, "error", rmErr)
+		}
 		return nil, fmt.Errorf("failed to extract model info: %w", err)
 	}
 
 	// 5. Persist the sidecar JSON so LoadModelInfo can read it on restart
 	if err := saveModelInfoJSON(info, infoPath); err != nil {
-		os.Remove(onnxPath)
+		if rmErr := os.Remove(onnxPath); rmErr != nil {
+			logger.Warn("failed to cleanup model file", "path", onnxPath, "error", rmErr)
+		}
 		return nil, fmt.Errorf("failed to save model info sidecar: %w", err)
 	}
 	logger.Info("model info sidecar saved", "path", infoPath)
@@ -74,16 +78,24 @@ func (s *ModelService) RegisterModel(req RegisterModelRequest) (*RegisterModelRe
 	// 6. Create the predictor (reads sidecar internally via LoadModelInfo)
 	predictor, err := onnx.NewONNXPredictor(req.ID, req.Name, req.Version, onnxPath)
 	if err != nil {
-		os.Remove(onnxPath)
-		os.Remove(infoPath)
+		if rmErr := os.Remove(onnxPath); rmErr != nil {
+			logger.Warn("failed to cleanup model file", "path", onnxPath, "error", rmErr)
+		}
+		if rmErr := os.Remove(infoPath); rmErr != nil {
+			logger.Warn("failed to cleanup model info sidecar", "path", infoPath, "error", rmErr)
+		}
 		return nil, fmt.Errorf("failed to initialize model predictor: %w", err)
 	}
 
 	// 7. Register in the registry
 	if err := s.registry.Register(req.ID, predictor); err != nil {
 		predictor.Close()
-		os.Remove(onnxPath)
-		os.Remove(infoPath)
+		if rmErr := os.Remove(onnxPath); rmErr != nil {
+			logger.Warn("failed to cleanup model file", "path", onnxPath, "error", rmErr)
+		}
+		if rmErr := os.Remove(infoPath); rmErr != nil {
+			logger.Warn("failed to cleanup model info sidecar", "path", infoPath, "error", rmErr)
+		}
 		return nil, err // already typed (ModelAlreadyExistsError)
 	}
 
@@ -109,6 +121,7 @@ func saveFile(src io.Reader, dst string) error {
 	defer f.Close()
 
 	if _, err := io.Copy(f, src); err != nil {
+		os.Remove(dst) // cleanup partial file
 		return err
 	}
 	return nil

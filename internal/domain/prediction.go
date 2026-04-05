@@ -6,20 +6,19 @@ import (
 )
 
 type PredictionRequest struct {
-	ModelID string `json:"model_id"`
-	RequestID string `json:"request_id,omitempty"`
-	Features []float64 `json:"features"`
+	ModelID   string    `json:"model_id"`
+	RequestID string    `json:"request_id,omitempty"`
+	Features  []float64 `json:"features"`
 }
 
 type PredictionResponse struct {
-	ModelID string `json:"model_id"`
-	RequestID string `json:"request_id"`
-	LatencyMs float64 `json:"latency_ms"`
+	ModelID    string    `json:"model_id"`
+	RequestID  string    `json:"request_id"`
+	LatencyMs  float64   `json:"latency_ms"`
 	Prediction []float64 `json:"prediction"`
-	Timestamp   time.Time `json:"timestamp"`
-	Confidence  *float64  `json:"confidence,omitempty"`
+	Timestamp  time.Time `json:"timestamp"`
+	Confidence *float64  `json:"confidence,omitempty"`
 }
-
 
 func (req *PredictionRequest) Validate() error {
 	if req.ModelID == "" {
@@ -34,10 +33,10 @@ func (req *PredictionRequest) Validate() error {
 }
 
 type ValidationError struct {
-    Field   string
-    Message string
+	Field   string
+	Message string
 }
 
 func (e *ValidationError) Error() string {
-    return fmt.Sprintf("Validation error [%s]: %s", e.Field, e.Message)
+	return fmt.Sprintf("Validation error [%s]: %s", e.Field, e.Message)
 }
